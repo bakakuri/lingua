@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useTheme } from '../lib/ThemeContext.jsx'
 import { supabase } from '../lib/supabase.js'
-import { getAllProfiles, getFriends, getPendingFriends, sendFriendRequest,
-         respondFriendRequest, removeFriend, getFriendStatus } from '../utils/db.js'
+import { getAllProfiles } from '../utils/db.js'
+import { getFriends, getPendingFriends, sendFriendRequest,
+         respondFriendRequest, removeFriend, getFriendStatus } from '../utils/friends.js'
 
 function Avatar({ p, size=40, C }) {
   return (
@@ -258,20 +259,18 @@ export default function FriendsScreen({ user, onNav, onChallenge }) {
                 return (
                   <FriendCard key={p.id} p={p} delay={i*40} actions={[
                     isFriend
-                      ? <Btn key="fr" onClick={()=>onChallenge(p)} color={C.a}>⚔️ დუელი</Btn>
-                      : isSentByMe
-                      ? <span style={{ color:C.ts, fontSize:11 }}>მოლოდინში...</span>
+                      ? <Btn key="f" color={C.g} onClick={()=>onChallenge(p)}>⚔️ მეგობარი</Btn>
                       : isPending
-                      ? <Btn key="ac" onClick={()=>acceptById(p.id)} color={C.g} disabled={busy===p.id}>
-                          {busy===p.id ? '...' : '✅ მიღება'}
-                        </Btn>
-                      : <Btn key="add" onClick={()=>addFriend(p)} color={C.p} disabled={busy===p.id}>
-                          {busy===p.id ? '...' : '+ მეგობარი'}
-                        </Btn>
+                        ? (isSentByMe
+                            ? <Btn key="p" color={C.tm} disabled>⏳ გაგზავნილია</Btn>
+                            : <>
+                                <Btn key="a" color={C.g} onClick={()=>acceptById(p.id)} disabled={busy===p.id}>✅ მიღება</Btn>
+                                <Btn key="d" color={C.r} onClick={()=>remove(p)} disabled={busy===p.id}>✕ უარი</Btn>
+                              </>)
+                        : <Btn key="add" color={C.a} onClick={()=>addFriend(p)} disabled={busy===p.id}>➕ დამატება</Btn>
                   ]} />
                 )
-              })
-          }
+              })}
         </div>
       )}
     </div>
