@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from '../lib/ThemeContext.jsx'
 import { LANG } from '../theme.js'
-import { getCustomWords, addCustomWord, deleteCustomWord } from '../utils/db.js'
+import { getCustomWords, addCustomWord, deleteCustomWord } from '../utils/customWords.js'
 
 export default function CustomWordsScreen({ user, lang, onBack }) {
   const { C, gls } = useTheme()
